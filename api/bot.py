@@ -1,3 +1,4 @@
+from pytz import utc
 import os
 import asyncio
 from telegram import Bot
@@ -147,36 +148,6 @@ async def send_message_to_channel(bot, message):
 async def start(update, context):
     await update.message.reply_text("Bot is running!")
 
-# from apscheduler.schedulers.background import BackgroundScheduler
-
-# async def main():
-#     bot = Bot(TELEGRAM_BOT_TOKEN)
-#     message = await format_and_send_fixtures(bot)
-
-#     scheduler = BackgroundScheduler()
-#     scheduler.start()
-
-
-#     async def send_message_wrapper():
-#         await send_message_to_channel(bot, message)  # Schedule the actual async function
-
-#     partial_function = partial(send_message_wrapper)
-
-#     scheduler.add_job(partial_function, 'cron', hour=16, minute=45)
-
-#     try:
-#         while True:
-#             schedule.run_pending()
-#             await asyncio.sleep(1)  # Use asyncio.sleep for async tasks
-#     except KeyboardInterrupt:
-#         print("Bot is shutting down...")
-#         # Perform any cleanup operations here if needed
-#     finally:
-#         print("Bot has shut down.")
-
-
-# if __name__ == '__main__':
-#     asyncio.run(main())
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -187,7 +158,7 @@ async def main():
     scheduler.start()
 
     # Schedule the job to run daily at 16:45
-    scheduler.add_job(format_and_send_fixtures, 'cron', hour=16, minute=55, args=[bot])
+    scheduler.add_job(format_and_send_fixtures, 'cron', hour=7, minute=0, args=[bot])
 
     try:
         # Keep the script running
