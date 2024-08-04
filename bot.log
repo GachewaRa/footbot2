@@ -1,0 +1,24 @@
+2024-08-04 16:17:14,690 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7253826437:AAHQIeeGT0aMJwez05zZbIOEWycYSkHVSbA/sendMessage "HTTP/1.1 200 OK"
+2024-08-04 16:17:14,691 - __main__ - INFO - Message(s) sent successfully
+2024-08-04 16:18:43,061 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7253826437:AAHQIeeGT0aMJwez05zZbIOEWycYSkHVSbA/sendMessage "HTTP/1.1 200 OK"
+2024-08-04 16:18:43,063 - __main__ - INFO - Message(s) sent successfully
+2024-08-04 16:34:00,070 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7253826437:AAHQIeeGT0aMJwez05zZbIOEWycYSkHVSbA/sendMessage "HTTP/1.1 200 OK"
+2024-08-04 16:34:00,073 - __main__ - INFO - Message(s) sent successfully
+2024-08-04 16:34:00,095 - apscheduler.scheduler - INFO - Scheduler started
+2024-08-04 16:34:00,125 - apscheduler.scheduler - INFO - Added job "partial" to job store "default"
+2024-08-04 16:39:43,033 - __main__ - ERROR - Error sending message: Timed out
+2024-08-04 16:39:43,038 - apscheduler.scheduler - INFO - Scheduler started
+2024-08-04 16:39:43,043 - apscheduler.scheduler - INFO - Added job "partial" to job store "default"
+2024-08-04 16:45:00,001 - apscheduler.executors.default - INFO - Running job "partial (trigger: cron[hour='16', minute='45'], next run at: 2024-08-04 16:45:00 EAT)" (scheduled at 2024-08-04 16:45:00+03:00)
+2024-08-04 16:45:00,001 - apscheduler.executors.default - INFO - Job "partial (trigger: cron[hour='16', minute='45'], next run at: 2024-08-04 16:45:00 EAT)" executed successfully
+2024-08-04 16:50:54,781 - apscheduler.scheduler - INFO - Scheduler started
+2024-08-04 16:50:54,786 - apscheduler.scheduler - INFO - Added job "format_and_send_fixtures" to job store "default"
+2024-08-04 16:51:00,001 - apscheduler.executors.default - INFO - Running job "format_and_send_fixtures (trigger: cron[hour='16', minute='51'], next run at: 2024-08-05 16:51:00 EAT)" (scheduled at 2024-08-04 16:51:00+03:00)
+2024-08-04 16:51:33,546 - __main__ - ERROR - Error sending message: Timed out
+2024-08-04 16:51:33,546 - apscheduler.executors.default - INFO - Job "format_and_send_fixtures (trigger: cron[hour='16', minute='51'], next run at: 2024-08-05 16:51:00 EAT)" executed successfully
+2024-08-04 16:53:22,969 - apscheduler.scheduler - INFO - Scheduler started
+2024-08-04 16:53:22,973 - apscheduler.scheduler - INFO - Added job "format_and_send_fixtures" to job store "default"
+2024-08-04 16:55:00,002 - apscheduler.executors.default - INFO - Running job "format_and_send_fixtures (trigger: cron[hour='16', minute='55'], next run at: 2024-08-05 16:55:00 EAT)" (scheduled at 2024-08-04 16:55:00+03:00)
+2024-08-04 16:55:37,265 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7253826437:AAHQIeeGT0aMJwez05zZbIOEWycYSkHVSbA/sendMessage "HTTP/1.1 200 OK"
+2024-08-04 16:55:37,266 - __main__ - INFO - Message(s) sent successfully
+2024-08-04 16:55:37,267 - apscheduler.executors.default - INFO - Job "format_and_send_fixtures (trigger: cron[hour='16', minute='55'], next run at: 2024-08-05 16:55:00 EAT)" executed successfully

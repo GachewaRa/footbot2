@@ -1,16 +1,16 @@
+import os
 import asyncio
-from http.server import BaseHTTPRequestHandler
-from telegram.ext import Application, CommandHandler
 from telegram import Bot
 import logging
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import requests
 from datetime import datetime
-from collections import defaultdict
-import os
-import json
+
+
+
 
 # Setup logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(filename='bot.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Constants
@@ -23,6 +23,10 @@ headers = {
     'x-apisports-host': API_FOOTBALL_URL,
     'x-apisports-key': API_FOOTBALL_KEY
 }
+
+
+from collections import defaultdict
+
 
 def fetch_predictions(fixture_id):
     url = f"{API_FOOTBALL_URL}predictions"
@@ -45,7 +49,7 @@ def fetch_fixtures():
     for league_id in leagues:
         url = f"{API_FOOTBALL_URL}fixtures"
         querystring = {
-            "date":   "2024-08-03", #datetime.today().strftime('%Y-%m-%d'),
+            "date":  datetime.today().strftime('%Y-%m-%d'), #"2024-08-03", 
             "league": league_id,
             "season": "2024"
         }
@@ -86,16 +90,6 @@ def fetch_fixtures():
             print(f"Error fetching league {league_id}: {response.status_code}")
             print(f"Response Text: {response.text}")
 
-    # Print fixtures by league
-    for league_id, fixtures in league_fixtures.items():
-        if fixtures:
-            print(f"{fixtures[0]['country']} - {fixtures[0]['league_name']} Fixtures")
-            for i, fixture in enumerate(fixtures, 1):
-                match_time = datetime.fromisoformat(fixture['match_time']).strftime('%H:%M')
-                print(f"{i}. {fixture['home_team']} vs {fixture['away_team']} at {match_time}")
-                print(f"   Prediction: {fixture['prediction']}")
-            print()  # Empty line between leagues
-
     return league_fixtures
 
 
@@ -130,8 +124,11 @@ async def format_and_send_fixtures(bot):
     message += "Get 200% bonus 💰 on Melbet, use Promo code: BNS 👉 melbet.com\n"
     message += "For daily odds boost 🚀 use Promo code BST on 1Xbet 👉 1xbet.com"
     
-    # Send the combined message
     await send_message_to_channel(bot, message)
+
+    return message
+    # Send the combined message
+    
 
 async def send_message_to_channel(bot, message):
     try:
@@ -150,22 +147,57 @@ async def send_message_to_channel(bot, message):
 async def start(update, context):
     await update.message.reply_text("Bot is running!")
 
-# Initialize the application
-application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
-application.add_handler(CommandHandler("start", start))
+# from apscheduler.schedulers.background import BackgroundScheduler
 
-# The handler class for serverless function
-class handler(BaseHTTPRequestHandler):
-    def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length)
-        
-        # Process the update
-        application.process_update(json.loads(post_data))
-        
-        # Send fixtures
-        bot = Bot(token=TELEGRAM_BOT_TOKEN)
-        asyncio.run(format_and_send_fixtures(bot))
-        
-        self.send_response(200)
-        self.end_headers()
+# async def main():
+#     bot = Bot(TELEGRAM_BOT_TOKEN)
+#     message = await format_and_send_fixtures(bot)
+
+#     scheduler = BackgroundScheduler()
+#     scheduler.start()
+
+
+#     async def send_message_wrapper():
+#         await send_message_to_channel(bot, message)  # Schedule the actual async function
+
+#     partial_function = partial(send_message_wrapper)
+
+#     scheduler.add_job(partial_function, 'cron', hour=16, minute=45)
+
+#     try:
+#         while True:
+#             schedule.run_pending()
+#             await asyncio.sleep(1)  # Use asyncio.sleep for async tasks
+#     except KeyboardInterrupt:
+#         print("Bot is shutting down...")
+#         # Perform any cleanup operations here if needed
+#     finally:
+#         print("Bot has shut down.")
+
+
+# if __name__ == '__main__':
+#     asyncio.run(main())
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+async def main():
+    bot = Bot(TELEGRAM_BOT_TOKEN)
+    
+    scheduler = AsyncIOScheduler()
+    scheduler.start()
+
+    # Schedule the job to run daily at 16:45
+    scheduler.add_job(format_and_send_fixtures, 'cron', hour=16, minute=55, args=[bot])
+
+    try:
+        # Keep the script running
+        while True:
+            await asyncio.sleep(1)
+    except KeyboardInterrupt:
+        print("Bot is shutting down...")
+        scheduler.shutdown()
+    finally:
+        print("Bot has shut down.")
+
+if __name__ == '__main__':
+    asyncio.run(main())
